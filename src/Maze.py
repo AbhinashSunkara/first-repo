@@ -156,8 +156,7 @@ def move():
         if a.shape() == r"C:\Users\abhis\OneDrive\Desktop\MazeStealer\src\pink.gif":
             a.shape(r"C:\Users\abhis\OneDrive\Desktop\MazeStealer\src\pink1.gif")
         if a.shape() == r"C:\Users\abhis\OneDrive\Desktop\MazeStealer\src\blue.gif":
-            a.shape(r"C:\User
-                    s\abhis\OneDrive\Desktop\MazeStealer\src\blue1.gif")
+            a.shape(r"C:\Users\abhis\OneDrive\Desktop\MazeStealer\src\blue1.gif")
         a.setx(x - move_step)
 
 s.listen()
