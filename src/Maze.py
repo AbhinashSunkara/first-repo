@@ -1,7 +1,11 @@
 import turtle
 import time
 import random
+import os
 from tkinter import *
+
+# Define the base path for assets
+BASE_PATH = os.path.join(os.path.dirname(__file__), "assets")
 
 # Player color control window
 root = Tk()
@@ -13,18 +17,18 @@ life = 2
 sc = 0
 hs = 0
 
-# Players Gifs registering (fixed backslashes)
-turtle.register_shape(r"C:\Users\abhis\OneDrive\Desktop\MazeStealer\src\pink.gif")
-turtle.register_shape(r"C:\Users\abhis\OneDrive\Desktop\MazeStealer\src\pink1.gif")
-turtle.register_shape(r"C:\Users\abhis\OneDrive\Desktop\MazeStealer\src\blue.gif")
-turtle.register_shape(r"C:\Users\abhis\OneDrive\Desktop\MazeStealer\src\blue1.gif")
-turtle.register_shape(r"C:\Users\abhis\OneDrive\Desktop\MazeStealer\src\red.gif")
-turtle.register_shape(r"C:\Users\abhis\OneDrive\Desktop\MazeStealer\src\red1.gif")
+# Players Gifs registering (using relative paths)
+turtle.register_shape(os.path.join(BASE_PATH, "pink.gif"))
+turtle.register_shape(os.path.join(BASE_PATH, "pink1.gif"))
+turtle.register_shape(os.path.join(BASE_PATH, "blue.gif"))
+turtle.register_shape(os.path.join(BASE_PATH, "blue1.gif"))
+turtle.register_shape(os.path.join(BASE_PATH, "red.gif"))
+turtle.register_shape(os.path.join(BASE_PATH, "red1.gif"))
 
 # Game play window
 s = turtle.Screen()
 s.bgcolor("black")
-s.bgpic(r"C:\Users\abhis\OneDrive\Desktop\MazeStealer\src\bgpic.gif")
+s.bgpic(os.path.join(BASE_PATH, "bgpic.gif"))
 s.title("Maize Stealer")
 s.tracer(0)
 s.setup(width=700, height=700)
@@ -38,7 +42,7 @@ a = turtle.Turtle()
 a.pensize(0)
 a.color("orange")
 a.shapesize(0.9, 0.9, 0.9)
-a.shape(r"C:\Users\abhis\OneDrive\Desktop\MazeStealer\src\blue.gif")
+a.shape(os.path.join(BASE_PATH, "blue.gif"))
 a.direction = "stop"
 a.goto(0, 0)
 a.speed(0)  # Set initial speed to 0 for consistent movement
@@ -49,13 +53,13 @@ move_step = 5  # Define the step size for each movement
 delay = 0.1  # Delay between each frame update to control overall game speed
 
 def red():
-    a.shape(r"C:\Users\abhis\OneDrive\Desktop\MazeStealer\src\red.gif")
+    a.shape(os.path.join(BASE_PATH, "red.gif"))
 
 def blue():
-    a.shape(r"C:\Users\abhis\OneDrive\Desktop\MazeStealer\src\blue.gif")
+    a.shape(os.path.join(BASE_PATH, "blue.gif"))
 
 def pink():
-    a.shape(r"C:\Users\abhis\OneDrive\Desktop\MazeStealer\src\pink.gif")
+    a.shape(os.path.join(BASE_PATH, "pink.gif"))
 
 def exit():
     turtle.Screen().bye()
@@ -133,30 +137,22 @@ def move():
 
     if a.direction == "right":
         x = a.xcor()
+        if a.shape() == os.path.join(BASE_PATH, "red1.gif"):
+            a.shape(os.path.join(BASE_PATH, "red.gif"))
+        if a.shape() == os.path.join(BASE_PATH, "blue1.gif"):
+            a.shape(os.path.join(BASE_PATH, "blue.gif"))
+        if a.shape() == os.path.join(BASE_PATH, "pink1.gif"):
+            a.shape(os.path.join(BASE_PATH, "pink.gif"))
         a.setx(x + move_step)
 
     if a.direction == "left":
         x = a.xcor()
-        a.setx(x - move_step)
-
-    if a.direction == "right":
-        x = a.xcor()
-        if a.shape() == r"C:\Users\abhis\OneDrive\Desktop\MazeStealer\src\red1.gif":
-            a.shape(r"C:\Users\abhis\OneDrive\Desktop\MazeStealer\src\red.gif")
-        if a.shape() == r"C:\Users\abhis\OneDrive\Desktop\MazeStealer\src\blue1.gif":
-            a.shape(r"C:\Users\abhis\OneDrive\Desktop\MazeStealer\src\blue.gif")
-        if a.shape() == r"C:\Users\abhis\OneDrive\Desktop\MazeStealer\src\pink1.gif":
-            a.shape(r"C:\Users\abhis\OneDrive\Desktop\MazeStealer\src\pink.gif")
-        a.setx(x + move_step)
-
-    if a.direction == "left":
-        x = a.xcor()
-        if a.shape() == r"C:\Users\abhis\OneDrive\Desktop\MazeStealer\src\red.gif":
-            a.shape(r"C:\Users\abhis\OneDrive\Desktop\MazeStealer\src\red1.gif")
-        if a.shape() == r"C:\Users\abhis\OneDrive\Desktop\MazeStealer\src\pink.gif":
-            a.shape(r"C:\Users\abhis\OneDrive\Desktop\MazeStealer\src\pink1.gif")
-        if a.shape() == r"C:\Users\abhis\OneDrive\Desktop\MazeStealer\src\blue.gif":
-            a.shape(r"C:\Users\abhis\OneDrive\Desktop\MazeStealer\src\blue1.gif")
+        if a.shape() == os.path.join(BASE_PATH, "red.gif"):
+            a.shape(os.path.join(BASE_PATH, "red1.gif"))
+        if a.shape() == os.path.join(BASE_PATH, "pink.gif"):
+            a.shape(os.path.join(BASE_PATH, "pink1.gif"))
+        if a.shape() == os.path.join(BASE_PATH, "blue.gif"):
+            a.shape(os.path.join(BASE_PATH, "blue1.gif"))
         a.setx(x - move_step)
 
 s.listen()
@@ -260,45 +256,343 @@ k.penup()
 k.hideturtle()
 a.speed(0.5)
 
-# Entire game logic
-while True:
+
+#Entire game logic
+while True :
     s.update()
-
-    # Control game speed based on score
-    if sc > 50:
-        delay = 0.1
-    if sc > 150:
-        delay = 0.05  # Faster gameplay after score 150
-
-    a.speed(0.6)  # Maintain a consistent movement speed for the player
-
-    if a.xcor() > 230 or a.xcor() < -230 or a.ycor() > 230 or a.ycor() < -230:
+    
+    if sc>50:
+            delay=0.1
+    if sc>150:
+            a.speed(8)
+    a.speed(0.6)
+    if a.xcor()>230 or a.xcor()<-230 or a.ycor()>230 or a.ycor()<-230 :
         time.sleep(1)
-        a.goto(0, 0)
-        a.direction = "stop"
-        delay = 0.1
-        life -= 1
+        a.speed(10)
+        a.goto(0,0)
+        a.direction="stop"
+        delay=0.001
+        life=life-1
         score.clear()
-        food.goto(50, 0)
-
-        score.write("Score : {} High Score : {} Life: {} ".format(sc, hs, life), align="center", font=("candra", 16, "bold"))
-        if life == 0:
-            if sc > hs:
-                hs = sc
-            time.sleep(1)
-            a.goto(0, 0)
-            sc = 0
-            life = 3
+        food.goto(50,0)
+        
+        score.write("Score : {} High Score : {} Life: {} ".format(sc,hs,life),align="center",font=("candra",16,"bold"))
+    
+        if(life<=0):
+            life=2
             score.clear()
-            score.write("Score : {} High Score : {} Life: {} ".format(sc, hs, life), align="center", font=("candra", 16, "bold"))
-    if a.distance(food) < 20:
-        food.goto(50, 0)
-        x = random.randint(-240, 240)
-        y = random.randint(-240, 240)
-        food.goto(x, y)
-        sc += 10
-        score.clear()
-        score.write("Score : {} High Score : {} Life: {} ".format(sc, hs, life), align="center", font=("candra", 16, "bold"))
+            food.goto(50,0)
+            sc=0
+            score.write("Score : 0 High Score : {} Life: {} ".format(hs,life),align="center",font=("candra",16,"bold"))
+        
+    if  (a.ycor()>190 and a.ycor()<230 and a.xcor()>-220 and a.xcor()<220):
+        if a.direction=="down":
+                a.direction="stop"
+        if a.direction=="up" :
+                a.direction="stop"
+                
+    if (a.ycor()>=205 and a.ycor()<=215 and a.xcor()<-210 and a.xcor()>-230):
+        if a.direction=="right":
+            a.direction="stop"
+            
+    if (a.ycor()>=205 and a.ycor()<=215 and a.xcor()>210 and a.xcor()<230):
+        if a.direction=="left":
+            a.direction="stop"
+        delay=0.01
+        
+    if(a.ycor()>=55 and a.xcor()>=165 and a.ycor()<=65 and a.xcor()<=170 ):
+            if a.direction=="down":
+                a.direction="stop"
+                
+    if (a.ycor()>=150 and a.ycor()<=180 and a.xcor()>-110 and a.xcor()<125):
+        if a.direction=="down":
+                a.direction="stop"
+        if a.direction=="up" :
+                a.direction="stop"
+    if (a.ycor()<=-170 and a.ycor()>=-190 and a.xcor()>-110 and a.xcor()<125):
+        if a.direction=="down":
+                a.direction="stop"
+        if a.direction=="up" :
+                a.direction="stop"
+                
+    if(a.ycor()>=160 and a.ycor()<=180 and a.xcor()>110 and a.xcor()<130):
+        if a.direction=="left":
+            a.direction="stop"
+            
+    if(a.ycor()>=160 and a.ycor()<=180 and a.xcor()<-100 and a.xcor()>-120):
+        if a.direction=="right":
+            a.direction="stop"
+            
+    if(a.ycor()<=-170 and a.ycor()>=-190 and a.xcor()>110 and a.xcor()<130):
+        if a.direction=="left":
+            a.direction="stop"
+            
+    if(a.ycor()<=-170 and a.ycor()>=-190 and a.xcor()<-100 and a.xcor()>-120):
+        if a.direction=="right":
+            a.direction="stop"
+            
+    if  (a.ycor()<-190 and a.ycor()>-230 and a.xcor()>-220 and a.xcor()<210):
+        if a.direction=="down":
+                a.direction="stop"
+        if a.direction=="up" :
+                a.direction="stop"
+                
+    if  (a.ycor()<-205 and a.ycor()>-215 and a.xcor()<-200 and a.xcor()>-230):
+        if a.direction=="right":
+            a.direction="stop"
+            
+    if  (a.ycor()<-200 and a.ycor()>-220 and a.xcor()>210 and a.xcor()<230):
+        if a.direction=="left":
+            a.direction="stop"
+        delay=0.01
+        
+    if (a.ycor()>=-190 and a.ycor()<=-160 and a.xcor()>-100 and a.xcor()<120):
+        if a.direction=="down":
+                a.direction="stop"
+        if a.direction=="up" :
+                a.direction="stop"
+                
+    if (a.ycor()>=-90 and a.ycor()<=70 and a.xcor()<-140 and a.xcor()>-175):
+        if a.direction=="left":
+                a.direction="stop"
+        if a.direction=="right" :
+                a.direction="stop"
+                
+    if (a.ycor()<=-80 and a.ycor()>=-90 and a.xcor()<-150 and a.xcor()>-175):
+        if a.direction=="up":
+            a.direction="stop"
+            
+    if (a.ycor()>60 and a.ycor()<=70 and a.xcor()<-150 and a.xcor()>-175):
+        if a.direction=="down":
+            a.direction="stop"
+            
+    if (a.ycor()>=-90 and a.ycor()<=70 and a.xcor()>140 and a.xcor()<175):
+        if a.direction=="left":
+                a.direction="stop"
+        if a.direction=="right" :
+                a.direction="stop"
+                
+    if (a.ycor()<=-80 and a.ycor()>=-90 and a.xcor()>150 and a.xcor()<175):
+       if a.direction=="up":
+            a.direction="stop"
+            
+    if (a.ycor()>60 and a.ycor()<=70 and a.xcor()>150 and a.xcor()<175):
+       if a.direction=="down":
+            a.direction="stop"
+            
+    if (a.distance(l)<=42):
+            if a.direction=="right":
+                    a.direction="stop"
+                    x=a.xcor()
+                    a.setx(x-8)
+                    s.listen()
+                    
+                    move()
+                    time.sleep(0.097)
+                    a.speed(0.5)
+            if a.direction=="left":
+                    a.direction="stop"
+                    x=a.xcor()
+                    a.setx(x+8)
+                    s.listen()
+                    move()
+                    time.sleep(0.097)
+                    a.speed(0.5)
+            if a.direction=="down":
+                    a.direction="stop"
+                    y=a.ycor()
+                    a.sety(y+8)
+                    s.listen()
+                    move()
+                    time.sleep(0.097)
+                    a.speed(0.5)
+            if a.direction=="up":
+                    a.direction="stop"
+                    y=a.ycor()
+                    a.sety(y-8)
+                    s.listen()
+                    move()
+                    a.speed(0.5)
+                    time.sleep(0.097)
+                    
+    if (a.distance(p)<=42):
+            if a.direction=="right":
+                    a.direction="stop"
+                    x=a.xcor()
+                    a.setx(x-8)
+                    s.listen()
+                    move()
+                    a.speed(0.5)
+                    time.sleep(0.097)
+            if a.direction=="left":
+                    a.direction="stop"
+                    x=a.xcor()
+                    a.setx(x+8)
+                    s.listen()
+                    move()
+                    a.speed(0.5)
+                    time.sleep(0.097)
+            if a.direction=="down":
+                    a.direction="stop"
+                    y=a.ycor()
+                    a.sety(y+8)
+                    s.listen()
+                    move()
+                    a.speed(0.5)
+                    time.sleep(0.097)
+            if a.direction=="up":
+                    a.direction="stop"
+                    y=a.ycor()
+                    a.sety(y-8)
+                    s.listen()
+                    move()
+                    a.speed(0.5)
+                    time.sleep(0.097)
+                    
+    if (a.distance(h)<=42):
+            if a.direction=="right":
+                    a.direction="stop"
+                    x=a.xcor()
+                    a.setx(x-8)
+                    s.listen()
+                    move()
+                    a.speed(0.5)
+                    time.sleep(0.097)
+            if a.direction=="left":
+                    a.direction="stop"
+                    x=a.xcor()
+                    a.setx(x+8)
+                    s.listen()
+                    move()
+                    a.speed(0.5)
+                    time.sleep(0.097)
+            if a.direction=="down":
+                    a.direction="stop"
+                    y=a.ycor()
+                    a.sety(y+8)
+                    s.listen()
+                    move()
+                    a.speed(0.5)
+                    time.sleep(0.097)
+            if a.direction=="up":
+                    a.direction="stop"
+                    y=a.ycor()
+                    a.sety(y-8)
+                    s.listen()
+                    move()
+                    a.speed(0.5)
+                    time.sleep(0.097)
+    if ((food).distance(o)<20):
+        x=random.randint(-235,235)
+        y=random.randint(-235,235)
+        food.goto(x,y)
+    if (food).distance(h)<20:
+        x=random.randint(-235,235)
+        y=random.randint(-235,235)
+        food.goto(x,y)
+    if (food).distance(p)<20:
+        x=random.randint(-235,235)
+        y=random.randint(-235,235)
+        food.goto(x,y)
+    if (food).distance(l)<20:
+        x=random.randint(-235,235)
+        y=random.randint(-235,235)
+        food.goto(x,y)
+    if a.distance(food)<20:
+        
+        x=random.randint(-235,235)
+                    
+    if (a.distance(o)<=42):
+            if a.direction=="right":
+                    a.direction="stop"
+                    x=a.xcor()
+                    a.setx(x-8)
+                    s.listen()
+                    move()
+                    a.speed(0.5)
+                    time.sleep(0.097)
+            if a.direction=="left":
+                    a.direction="stop"
+                    x=a.xcor()
+                    a.setx(x+8)
+                    s.listen()
+                    move()
+                    a.speed(0.5)
+                    time.sleep(0.097)
+            if a.direction=="down":
+                    a.direction="stop"
+                    y=a.ycor()
+                    a.sety(y+8)
+                    s.listen()
+                    move()
+                    a.speed(0.5)
+                    time.sleep(0.097)
+            if a.direction=="up":
+                    a.direction="stop"
+                    y=a.ycor()
+                    a.sety(y-8)
+                    s.listen()
+                    move()
+                    a.speed(0.5)
+                    time.sleep(0.097)
+            
+    if a.distance(food)<15:
+        x=random.randint(-235,235)
+        y=random.randint(-235,235)
+        food.speed(50)
+        if(x>=200 and x<=205):
+                x=random.randint(-150,150)
+                y=random.randint(-150,150)
+        
+        if(x>=-100 and x<=110):
+                x=random.randint(-100,100)
+                y=random.randint(-100,100)
+        if(y>=-180 and y<=-170):
+                x=random.randint(-100,100)
+                y=random.randint(-100,100)
+        if(y==205):
+                x=random.randint(-100,100)
+                y=random.randint(-100,100)
+        if(y==-205):
+                x=random.randint(-100,100)
+                y=random.randint(-100,100)
+        if(x<-180 and x>-120):
+                x=random.randint(-200,200)
+                y=random.randint(-200,200)
+        if(x<200 and x>140):
+                x=random.randint(-200,200)
+                y=random.randint(-200,200)
+        if(y>-180 and y<-120):
+                x=random.randint(-200,200)
+                y=random.randint(-200,200)
+        if(y>120 and y<180):
+                x=random.randint(-200,200)
+                y=random.randint(-200,200)
+        if(y>=205 and y<=220 and x>-200 and x<200):
+                x=random.randint(-200,200)
+                y=random.randint(-200,200)
+        if  (y<=-205 and y>=-210 and x>-200 and x<200):
+                x=random.randint(-200,200)
+                y=random.randint(-200,200)
 
+        food.goto(x,y)
+        sc+=10
+        
+        if (sc>hs):
+            hs=sc
+        score.clear()
+        score.write("Score : {} High Score : {} Life : {}".format(sc,hs,life),align="center",font=("candra",16,"bold"))
+        
+        delay=0.01
+        
     move()
-    time.sleep(delay)
+    if(sc<50):
+            
+            time.sleep(0.097)
+    if(sc>=50 and sc<150):
+            time.sleep(0.05)
+    if(sc>=150):
+            time.sleep(0.025)
+    
+    
+turtle.done()
